@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkyCast | Live Weather Dashboard</title>
+
+    <meta name="description"
+        content="SkyCast is a beautiful real-time weather dashboard with live temperature, humidity, wind speed and animated weather effects.">
+
+    <meta name="keywords"
+        content="weather dashboard, live weather, weather app, SkyCast, temperature, humidity">
+
+    <meta name="author" content="Riddhi Singh">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= WEATHER ANIMATION LAYER ================= -->
+    <div id="weatherEffects" class="weather-effects" aria-hidden="true"></div>
+
+
+    <!-- ================= MAIN APP ================= -->
+    <main class="app-container">
+
+        <!-- HEADER -->
+        <header class="top-header">
+
+            <div class="brand-area">
+
+                <div class="brand-icon">
+                    ☁️
+                </div>
+
+                <div>
+                    <h1>SkyCast</h1>
+                    <p>Weather, beautifully simplified.</p>
+                </div>
+
+            </div>
+
+            <div class="live-status">
+                <span class="status-dot"></span>
+                LIVE WEATHER
+            </div>
+
+        </header>
+
+
+        <!-- ================= SEARCH SECTION ================= -->
+        <section class="search-section">
+
+            <div class="search-box">
+
+                <span class="search-icon">⌕</span>
+
+                <input
+                    type="text"
+                    id="cityInput"
+                    placeholder="Search for a city..."
+                    autocomplete="off"
+                >
+
+                <button id="searchBtn" class="search-btn">
+                    Search
+                </button>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+                <button id="locationBtn" class="secondary-btn">
+                    📍 Use My Location
+                </button>
+
+                <button id="refreshBtn" class="secondary-btn">
+                    ↻ Refresh
+                </button>
+
+            </div>
+
+
+            <!-- TEMPERATURE TOGGLE -->
+            <div class="unit-toggle">
+
+                <button id="celsiusBtn" class="unit-btn active">
+                    °C
+                </button>
+
+                <button id="fahrenheitBtn" class="unit-btn">
+                    °F
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ERROR MESSAGE ================= -->
+        <div id="errorMessage" class="error-message hidden">
+
+            <span class="error-icon">⚠️</span>
+
+            <span id="errorText">
+                Something went wrong.
+            </span>
+
+        </div>
+
+
+        <!-- ================= LOADING ================= -->
+        <div id="loading" class="loading hidden">
+
+            <div class="spinner"></div>
+
+            <p>Fetching live weather...</p>
+
+        </div>
+
+
+        <!-- ================= WEATHER DASHBOARD ================= -->
+        <section id="weatherDashboard" class="weather-dashboard">
+
+
+            <!-- LOCATION -->
+            <div class="location-heading">
+
+                <div>
+
+                    <p class="location-label">
+                        CURRENT LOCATION
+                    </p>
+
+                    <h2 id="cityName">
+                        Mumbai
+                    </h2>
+
+                    <p id="countryName">
+                        India
+                    </p>
+
+                </div>
+
+                <div class="date-area">
+
+                    <p id="currentDate">
+                        Loading date...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MAIN WEATHER CARD ================= -->
+            <div class="main-weather-card">
+
+                <div class="weather-visual">
+
+                    <div id="weatherIcon" class="weather-icon">
+                        ☀️
+                    </div>
+
+                    <p id="weatherCondition" class="weather-condition">
+                        Clear Sky
+                    </p>
+
+                </div>
+
+
+                <div class="temperature-area">
+
+                    <div class="temperature-row">
+
+                        <span id="temperature">
+                            --
+                        </span>
+
+                        <span id="temperatureUnit">
+                            °C
+                        </span>
+
+                    </div>
+
+                    <p class="feels-text">
+                        Feels like
+                        <strong id="feelsLike">--°</strong>
+                    </p>
+
+                </div>
+
+
+                <div class="weather-summary">
+
+                    <div class="summary-item">
+
+                        <span>💧</span>
+
+                        <div>
+                            <small>Humidity</small>
+                            <strong id="humidity">--%</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>💨</span>
+
+                        <div>
+                            <small>Wind</small>
+                            <strong id="windSpeed">-- km/h</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= METRICS ================= -->
+            <div class="metrics-grid">
+
+
+                <article class="metric-card">
+
+                    <div class="metric-icon">
+                        💧
+                    </div>
+
+                    <div>
+                        <span>Humidity</span>
+                        <strong id="humidityCard">--%</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <div class="metric-icon">
+                        💨
+                    </div>
+
+                    <div>
+                        <span>Wind Speed</span>
+                        <strong id="windCard">-- km/h</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <div class="metric-icon">
+                        👁️
+                    </div>
+
+                    <div>
+                        <span>Visibility</span>
+                        <strong id="visibility">-- km</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <div class="metric-icon">
+                        🌡️
+                    </div>
+
+                    <div>
+                        <span>Pressure</span>
+                        <strong id="pressure">-- hPa</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <div class="metric-icon">
+                        ☀️
+                    </div>
+
+                    <div>
+                        <span>UV Index</span>
+                        <strong id="uvIndex">--</strong>
+                    </div>
+
+                </article>
+
+
+                <article class="metric-card">
+
+                    <div class="metric-icon">
+                        🌤️
+                    </div>
+
+                    <div>
+                        <span>Condition</span>
+                        <strong id="conditionShort">--</strong>
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- ================= SUNRISE SUNSET ================= -->
+            <div class="sun-card">
+
+                <div class="sun-item">
+
+                    <div class="sun-symbol">
+                        🌅
+                    </div>
+
+                    <div>
+                        <span>Sunrise</span>
+                        <strong id="sunrise">--:--</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="sun-line"></div>
+
+
+                <div class="sun-item">
+
+                    <div class="sun-symbol">
+                        🌇
+                    </div>
+
+                    <div>
+                        <span>Sunset</span>
+                        <strong id="sunset">--:--</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RECENT SEARCHES ================= -->
+            <div class="recent-section">
+
+                <div class="recent-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            RECENT SEARCHES
+                        </span>
+
+                        <h3>
+                            Your cities
+                        </h3>
+
+                    </div>
+
+                    <button id="clearRecentBtn" class="clear-btn">
+                        Clear
+                    </button>
+
+                </div>
+
+
+                <div id="recentSearches" class="recent-searches">
+
+                    <!-- Cities added dynamically -->
+
+                </div>
+
+            </div>
+
+
+            <!-- LAST UPDATED -->
+            <div class="last-updated">
+
+                <span>●</span>
+
+                Last updated:
+                <strong id="lastUpdated">
+                    --
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+
+            <p>
+                SkyCast © 2026
+            </p>
+
+            <p>
+                Powered by Open-Meteo REST API
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
